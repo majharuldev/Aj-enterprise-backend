@@ -1,0 +1,67 @@
+<?php
+namespace App\Http\Controllers\Api\V1;
+use App\Http\Controllers\Controller;
+
+use App\Models\Driver;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class DriverController extends Controller
+{
+    public function index()
+    {
+        $drivers = Driver::where('user_id', Auth::id())->latest()->get();
+        return response()->json($drivers);
+    }
+
+    public function store(Request $request)
+    {
+       
+
+        $driver = Driver::create([
+            'user_id' => Auth::id(),
+            'driver_name' => $request->driver_name,
+            'driver_mobile' => $request->driver_mobile,
+            'nid' => $request->nid,
+            'address' => $request->address,
+            'note' => $request->note,
+            'lincense' => $request->lincense,
+            'expire_date' => $request->expire_date,
+            'lincense_image' => $request->lincense_image,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['message' => 'Driver created successfully', 'data' => $driver]);
+    }
+
+    public function show($id)
+    {
+        $driver = Driver::where('user_id', Auth::id())->find($id);
+        if (!$driver) {
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+        return response()->json($driver);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $driver = Driver::where('user_id', Auth::id())->find($id);
+        if (!$driver) {
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        $driver->update($request->all());
+        return response()->json(['message' => 'Driver updated successfully', 'data' => $driver]);
+    }
+
+    public function destroy($id)
+    {
+        $driver = Driver::where('user_id', Auth::id())->find($id);
+        if (!$driver) {
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        $driver->delete();
+        return response()->json(['message' => 'Driver deleted successfully']);
+    }
+}

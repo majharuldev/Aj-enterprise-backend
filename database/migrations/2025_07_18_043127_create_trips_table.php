@@ -20,12 +20,13 @@ return new class extends Migration
             $table->string('customer')->nullable();
             $table->string('branch_name')->nullable();
             $table->string('load_point')->nullable();
+            $table->string('additional_load')->nullable();
             $table->string('unload_point')->nullable();
             $table->string('transport_type')->nullable();
             $table->string('trip_type')->nullable();
             $table->string('trip_id')->nullable();
             $table->string('sms_sent')->nullable();
-            $table->string('vendor_rent')->nullable();
+        
             $table->string('vehicle_no')->nullable();
             $table->string('driver_name')->nullable();
             $table->string('vehicle_category')->nullable();
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->string('food_cost')->nullable();
             $table->string('total_exp')->nullable();
             $table->string('trip_rent')->nullable();
+            $table->string('vendor_rent')->nullable();
             $table->string('advance')->nullable();
             $table->string('due_amount')->nullable();
             $table->string('parking_cost')->nullable();

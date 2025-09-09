@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\V1\DriverController;
 use App\Http\Controllers\Api\V1\VehicleController;
 use App\Http\Controllers\Api\V1\MaintainceController;
 use App\Http\Controllers\Api\V1\DailyExpenseController;
+use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\HelperController;
 
 Route::prefix('v1')->group(function () {
 
@@ -50,5 +52,11 @@ Route::prefix('v1')->group(function () {
         
         // driver
         Route::apiResource('driver', DriverController::class);
+
+        // helper
+        Route::apiResource('helper', HelperController::class);
+
+        // employee
+        Route::apiResource('employee', EmployeeController::class);
     });
 });

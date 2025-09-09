@@ -10,7 +10,7 @@ class DriverController extends Controller
 {
     public function index()
     {
-        $drivers = Driver::where('user_id', Auth::id())->latest()->get();
+        $drivers = Driver::all();
         return response()->json($drivers);
     }
 

@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PaymentRecieveController extends Controller
+class FundTransferController extends Controller
 {
-  
-
-
     
 }

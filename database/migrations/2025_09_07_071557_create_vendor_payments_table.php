@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->BigInteger('user_id');
             $table->string('vendor_name')->nullable();
+            $table->string('date')->nullable();
             $table->string('branch_name')->nullable();
             $table->string('bill_ref')->nullable();
             $table->string('amount')->nullable();

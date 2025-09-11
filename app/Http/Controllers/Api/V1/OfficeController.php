@@ -25,7 +25,7 @@ class OfficeController extends Controller
     {
 
 
-        $Office = Office::create($request->all() + ['user_id' => Auth::id()]);
+        $Office = Office::all();
 
         return response()->json([
             'success' => true,

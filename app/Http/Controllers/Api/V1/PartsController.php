@@ -11,9 +11,8 @@ class PartsController extends Controller
 {
     public function index()
     {
-        $parts = Parts::where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $parts = Parts::all();
+           
 
         return response()->json($parts);
     }

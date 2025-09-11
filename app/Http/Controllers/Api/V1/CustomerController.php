@@ -17,8 +17,8 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-
-
+           
+  
         $Customer = Customer::create([
             'user_id' => Auth::id(),
             'Customer_name' => $request->Customer_name,
@@ -28,7 +28,7 @@ class CustomerController extends Controller
             'Opening_balance' => $request->Opening_balance,
             'status' => $request->status,
             'created_by' => $request->created_by,
-         
+
         ]);
 
         return response()->json(['message' => 'Customer created successfully', 'data' => $Customer]);

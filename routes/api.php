@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\MaintainceController;
 use App\Http\Controllers\Api\V1\DailyExpenseController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\HelperController;
+use App\Http\Controllers\Api\V1\VendorPaymentController;
 
 Route::prefix('v1')->group(function () {
 
@@ -58,5 +59,8 @@ Route::prefix('v1')->group(function () {
 
         // employee
         Route::apiResource('employee', EmployeeController::class);
+
+        // vendor Payment
+        Route::apiResource('vendor/payment', VendorPaymentController::class);
     });
 });

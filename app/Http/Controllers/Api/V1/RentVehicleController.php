@@ -13,7 +13,7 @@ class RentVehicleController extends Controller
     // get all Data by userid
     public function index()
     {
-        $RentVehicles = RentVehicle::where('user_id', Auth::id())->latest()->get();
+        $RentVehicles = RentVehicle::all();
         return response()->json([
             'success' => true,
             'data' => $RentVehicles

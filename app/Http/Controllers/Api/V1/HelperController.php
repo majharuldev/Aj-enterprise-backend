@@ -14,7 +14,7 @@ class HelperController extends Controller
     // get all Data by userid
     public function index()
     {
-        $Helpers = Helper::where('user_id', Auth::id())->latest()->get();
+        $Helpers = Helper::all();
         return response()->json([
             'success' => true,
             'data' => $Helpers

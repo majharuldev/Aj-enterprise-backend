@@ -12,7 +12,7 @@ class VendorController extends Controller
   // get all Data by userid
     public function index()
     {
-        $Vendors = Vendor::where('user_id', Auth::id())->latest()->get();
+        $Vendors = Vendor::all();
         return response()->json([
             'success' => true,
             'data' => $Vendors

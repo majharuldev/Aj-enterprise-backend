@@ -320,12 +320,37 @@ class TripController extends Controller
 
     public function destroy($id)
     {
-        $trip = trip::where('user_id', Auth::id())->find($id);
-        if (!$trip) {
-            return response()->json(['message' => 'Trip not found'], 404);
-        }
+        DB::beginTransaction();
 
-        $trip->delete();
-        return response()->json(['message' => 'Trip deleted successfully']);
+        try {
+            // Find the trip belonging to the authenticated user
+            $trip = Trip::where('user_id', Auth::id())->find($id);
+
+            if (!$trip) {
+                return response()->json(['message' => 'Trip not found'], 404);
+            }
+
+            // Delete related entries
+            DriverLedger::where('trip_id', $trip->id)->delete();
+            VendorLedger::where('trip_id', $trip->id)->delete();
+            OfficeLedger::where('trip_id', $trip->id)->delete();
+            CustomerLedger::where('trip_id', $trip->id)->delete();
+
+            // Delete the trip itself
+            $trip->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Trip and related records deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Failed to delete trip',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
     }
 }

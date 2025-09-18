@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('mode')->nullable();
             $table->string('unload_point')->nullable();
+            $table->string('load_point')->nullable();
             $table->string('trip_expense')->nullable();
             $table->string('due_amount')->nullable();
             $table->string('cash_in')->nullable();

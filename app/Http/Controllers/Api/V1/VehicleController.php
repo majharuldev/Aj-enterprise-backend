@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Vehicle;
@@ -15,35 +17,58 @@ class VehicleController extends Controller
     }
 
     // Store a new vehicle
-    public function store(Request $request)
-    {
-       
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'date'             => 'required|date',
+        'driver_name'      => 'required|string|max:255',
+        'vehicle_name'     => 'required|string|max:255',
+        'insurance_date'   => 'nullable|date',
+        'vehicle_size'     => 'required|string|max:100',
+        'vehicle_category' => 'required|string|max:100',
+        'reg_zone'         => 'required|string|max:50',
+        'reg_serial'       => 'required|string|max:50',
+        'reg_no'           => 'required|string|max:50',
+        'reg_date'         => 'required|date',
+        'status'           => 'required|string|max:50',
+        'tax_date'         => 'nullable|date',
+        'route_per_date'   => 'nullable|date',
+        'fitness_date'     => 'nullable|date',
+        'fuel_capcity'     => 'nullable|numeric',
+    ]);
 
-        $vehicle = Vehicle::create([
-            'user_id' => Auth::id(),
-            'date' => $request->date,
-            'driver_name' => $request->driver_name,
-            'vehicle_size' => $request->vehicle_size,
-            'vehicle_category' => $request->vehicle_category,
-            'reg_zone' => $request->reg_zone,
-            'reg_serial' => $request->reg_serial,
-            'reg_no' => $request->reg_no,
-            'reg_date' => $request->reg_date,
-            'status' => $request->status,
-            'tax_date' => $request->tax_date,
-            'route_per_date' => $request->route_per_date,
-            'fitness_date' => $request->fitness_date,
-            'fuel_capcity' => $request->fuel_capcity,
-        ]);
+    $vehicle = Vehicle::create([
+        'user_id'          => Auth::id(),
+        'date'             => $validated['date'],
+        'driver_name'      => $validated['driver_name'],
+        'vehicle_name'     => $validated['vehicle_name'],
+        'insurance_date'   => $validated['insurance_date'] ?? null,
+        'vehicle_size'     => $validated['vehicle_size'],
+        'vehicle_category' => $validated['vehicle_category'],
+        'reg_zone'         => $validated['reg_zone'],
+        'reg_serial'       => $validated['reg_serial'],
+        'reg_no'           => $validated['reg_no'],
+        'reg_date'         => $validated['reg_date'],
+        'status'           => $validated['status'],
+        'tax_date'         => $validated['tax_date'] ?? null,
+        'route_per_date'   => $validated['route_per_date'] ?? null,
+        'fitness_date'     => $validated['fitness_date'] ?? null,
+        'fuel_capcity'     => $validated['fuel_capcity'] ?? null,
+    ]);
 
-        return response()->json(['message' => 'Vehicle created successfully', 'data' => $vehicle]);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Vehicle created successfully',
+        'data' => $vehicle
+    ], 201);
+}
+
 
     // Show single vehicle
     public function show($id)
     {
         $vehicle = Vehicle::where('user_id', Auth::id())->find($id);
-        if (!$vehicle) {             
+        if (!$vehicle) {
             return response()->json(['message' => 'Vehicle not found'], 404);
         }
 

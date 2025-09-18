@@ -72,18 +72,18 @@ Route::prefix('v1')->group(function () {
         // customer
         Route::apiResource('customer', CustomerController::class);
 
-        // 
+        // vendor
         Route::apiResource('vendor', VendorController::class);
 
         // vendor Payment
-        Route::apiResource('vendor/payment', VendorPaymentController::class);
+        Route::apiResource('vendor-payment', VendorPaymentController::class);
 
 
         // payment recieve
-        Route::apiResource('payment/recieve', PaymentRecieveController::class);
+        Route::apiResource('payment-recieve', PaymentRecieveController::class);
 
         // supplier
-        Route::apiResource('payment/recieve', SupplierController::class);
+        Route::apiResource('supplier', SupplierController::class);
 
 
         // branch ledger
@@ -96,7 +96,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('driverLedger', DriverLedgerController::class);
 
         //   Vendor Ledger
-        Route::apiResource('driverLedger', VendorLedgerController::class);
+        Route::apiResource('vendorLedger', VendorLedgerController::class);
 
         //   Customer Ledger 
         Route::apiResource('customerLedger', CustomerLedgerController::class);

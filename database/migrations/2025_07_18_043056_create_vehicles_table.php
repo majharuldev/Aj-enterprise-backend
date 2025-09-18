@@ -16,17 +16,19 @@ return new class extends Migration
             $table->BigInteger('user_id'); // vehicle belongs to a user
             $table->string('date');
             $table->string('driver_name');
-            $table->string('vehicle_size');
-            $table->string('vehicle_category');
-            $table->string('reg_zone');
-            $table->string('reg_serial');
-            $table->string('reg_no');
-            $table->string('reg_date');
-            $table->string('status');
-            $table->string('tax_date');
-            $table->string('route_per_date');
-            $table->string('fitness_date');
-            $table->string('fuel_capcity');
+            $table->string('vehicle_name');
+            $table->string('insurance_date')->nullable();
+            $table->string('vehicle_size')->nullable();
+            $table->string('vehicle_category')->nullable();
+            $table->string('reg_zone')->nullable();
+            $table->string('reg_serial')->nullable();
+            $table->string('reg_no')->nullable();
+            $table->string('reg_date')->nullable();
+            $table->string('status')->nullable();
+            $table->string('tax_date')->nullable();
+            $table->string('route_per_date')->nullable();
+            $table->string('fitness_date')->nullable();
+            $table->string('fuel_capcity')->nullable();
             $table->timestamps();
         });
     }

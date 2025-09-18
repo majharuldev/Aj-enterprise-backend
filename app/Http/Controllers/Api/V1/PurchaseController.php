@@ -10,9 +10,6 @@ class PurchaseController extends Controller
     
 
 
-     
-
     
-
 
 }

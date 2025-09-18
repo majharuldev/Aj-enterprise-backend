@@ -71,8 +71,6 @@ class FundTransferController extends Controller
     }
 
 
-
-
     public function show($id)
     {
         $data = FundTransfer::findOrFail($id);

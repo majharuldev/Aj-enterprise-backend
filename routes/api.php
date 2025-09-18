@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\CustomerLedgerController;
 use App\Http\Controllers\Api\V1\FuelController;
 use App\Http\Controllers\Api\V1\TripController;
 use App\Http\Controllers\Api\V1\PartsController;
@@ -11,9 +13,18 @@ use App\Http\Controllers\Api\V1\DriverController;
 use App\Http\Controllers\Api\V1\VehicleController;
 use App\Http\Controllers\Api\V1\MaintainceController;
 use App\Http\Controllers\Api\V1\DailyExpenseController;
+use App\Http\Controllers\Api\V1\DriverLedgerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\HelperController;
+use App\Http\Controllers\Api\V1\OfficeLedgerController;
+use App\Http\Controllers\Api\V1\PaymentRecieveController;
+use App\Http\Controllers\Api\V1\PriceRateController;
+use App\Http\Controllers\Api\V1\SupplierController;
+use App\Http\Controllers\Api\V1\SupplierLedgerController;
+use App\Http\Controllers\Api\V1\VendorController;
+use App\Http\Controllers\Api\V1\VendorLedgerController;
 use App\Http\Controllers\Api\V1\VendorPaymentController;
+
 
 Route::prefix('v1')->group(function () {
 
@@ -29,8 +40,6 @@ Route::prefix('v1')->group(function () {
             return $request->user();
         });
         Route::post('/logout', [AuthController::class, 'logout']);
-
-        // CRUD routes for resources using apiResource (auto routes for index, show, store, update, destroy)
 
 
         // daily expense
@@ -50,7 +59,7 @@ Route::prefix('v1')->group(function () {
 
         // trip
         Route::apiResource('trip', TripController::class);
-        
+
         // driver
         Route::apiResource('driver', DriverController::class);
 
@@ -60,7 +69,39 @@ Route::prefix('v1')->group(function () {
         // employee
         Route::apiResource('employee', EmployeeController::class);
 
+        // customer
+        Route::apiResource('customer', CustomerController::class);
+
+        // 
+        Route::apiResource('vendor', VendorController::class);
+
         // vendor Payment
         Route::apiResource('vendor/payment', VendorPaymentController::class);
+
+
+        // payment recieve
+        Route::apiResource('payment/recieve', PaymentRecieveController::class);
+
+        // supplier
+        Route::apiResource('payment/recieve', SupplierController::class);
+
+
+        // branch ledger
+        Route::apiResource('OfficeLedger', OfficeLedgerController::class);
+
+        //   suppliier ledger
+        Route::apiResource('supplierLedger', SupplierLedgerController::class);
+
+        //   Driver Ledger
+        Route::apiResource('driverLedger', DriverLedgerController::class);
+
+        //   Vendor Ledger
+        Route::apiResource('driverLedger', VendorLedgerController::class);
+
+        //   Customer Ledger 
+        Route::apiResource('customerLedger', CustomerLedgerController::class);
+
+        // rate
+        Route::apiResource('rate', PriceRateController::class);
     });
 });

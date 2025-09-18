@@ -12,8 +12,6 @@ class PartsController extends Controller
     public function index()
     {
         $parts = Parts::all();
-           
-
         return response()->json($parts);
     }
 

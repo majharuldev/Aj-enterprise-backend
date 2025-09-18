@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->BigInteger('user_id'); // vehicle belongs to a user
-            $table->string('driver_name');
-            $table->string('driver_mobile');
-            $table->string('nid');
-            $table->string('address');
-            $table->string('note');
-            $table->string('lincense');
-            $table->string('expire_date');
-            $table->string('lincense_image');
-            $table->string('status');
+            $table->string('driver_name')->nullable();
+            $table->string('driver_mobile')->nullable();
+            $table->string('nid')->nullable();
+            $table->string('address')->nullable();
+            $table->string('emergency_contact')->nullable();
+            $table->string('opening_balance')->nullable();
+            $table->string('note')->nullable();
+            $table->string('lincense')->nullable();
+            $table->string('expire_date')->nullable();
+            $table->string('lincense_image')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

@@ -17,51 +17,61 @@ class VehicleController extends Controller
     }
 
     // Store a new vehicle
-   public function store(Request $request)
+ public function store(Request $request)
 {
-    $validated = $request->validate([
-        'date'             => 'required|date',
-        'driver_name'      => 'required|string|max:255',
-        'vehicle_name'     => 'required|string|max:255',
-        'insurance_date'   => 'nullable|date',
-        'vehicle_size'     => 'required|string|max:100',
-        'vehicle_category' => 'required|string|max:100',
-        'reg_zone'         => 'required|string|max:50',
-        'reg_serial'       => 'required|string|max:50',
-        'reg_no'           => 'required|string|max:50',
-        'reg_date'         => 'required|date',
-        'status'           => 'required|string|max:50',
-        'tax_date'         => 'nullable|date',
-        'route_per_date'   => 'nullable|date',
-        'fitness_date'     => 'nullable|date',
-        'fuel_capcity'     => 'nullable|numeric',
-    ]);
+    try {
+        $validated = $request->validate([
+            'date'             => 'required|date',
+            'driver_name'      => 'required|string|max:255',
+            'vehicle_name'     => 'required|string|max:255',
+            'insurance_date'   => 'nullable|date',
+            'vehicle_size'     => 'required|string|max:100',
+            'vehicle_category' => 'required|string|max:100',
+            'reg_zone'         => 'required|string|max:50',
+            'reg_serial'       => 'required|string|max:50',
+            'reg_no'           => 'required|string|max:50',
+            'reg_date'         => 'required|date',
+            'status'           => 'required|string|max:50',
+            'tax_date'         => 'nullable|date',
+            'route_per_date'   => 'nullable|date',
+            'fitness_date'     => 'nullable|date',
+            'fuel_capcity'     => 'nullable|numeric',
+        ]);
 
-    $vehicle = Vehicle::create([
-        'user_id'          => Auth::id(),
-        'date'             => $validated['date'],
-        'driver_name'      => $validated['driver_name'],
-        'vehicle_name'     => $validated['vehicle_name'],
-        'insurance_date'   => $validated['insurance_date'] ?? null,
-        'vehicle_size'     => $validated['vehicle_size'],
-        'vehicle_category' => $validated['vehicle_category'],
-        'reg_zone'         => $validated['reg_zone'],
-        'reg_serial'       => $validated['reg_serial'],
-        'reg_no'           => $validated['reg_no'],
-        'reg_date'         => $validated['reg_date'],
-        'status'           => $validated['status'],
-        'tax_date'         => $validated['tax_date'] ?? null,
-        'route_per_date'   => $validated['route_per_date'] ?? null,
-        'fitness_date'     => $validated['fitness_date'] ?? null,
-        'fuel_capcity'     => $validated['fuel_capcity'] ?? null,
-    ]);
+        $vehicle = Vehicle::create([
+            'user_id'          => Auth::id(),
+            'date'             => $validated['date'],
+            'driver_name'      => $validated['driver_name'],
+            'vehicle_name'     => $validated['vehicle_name'],
+            'insurance_date'   => $validated['insurance_date'] ?? null,
+            'vehicle_size'     => $validated['vehicle_size'],
+            'vehicle_category' => $validated['vehicle_category'],
+            'reg_zone'         => $validated['reg_zone'],
+            'reg_serial'       => $validated['reg_serial'],
+            'reg_no'           => $validated['reg_no'],
+            'reg_date'         => $validated['reg_date'],
+            'status'           => $validated['status'],
+            'tax_date'         => $validated['tax_date'] ?? null,
+            'route_per_date'   => $validated['route_per_date'] ?? null,
+            'fitness_date'     => $validated['fitness_date'] ?? null,
+            'fuel_capcity'     => $validated['fuel_capcity'] ?? null,
+        ]);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Vehicle created successfully',
-        'data' => $vehicle
-    ], 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle created successfully',
+            'data' => $vehicle
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Server Error',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
+
 
 
     // Show single vehicle

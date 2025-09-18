@@ -22,6 +22,8 @@ class DriverController extends Controller
             'user_id' => Auth::id(),
             'driver_name' => $request->driver_name,
             'driver_mobile' => $request->driver_mobile,
+            'emergency_contact' => $request->emergency_contact,
+            'opening_balance' => $request->opening_balance,
             'nid' => $request->nid,
             'address' => $request->address,
             'note' => $request->note,

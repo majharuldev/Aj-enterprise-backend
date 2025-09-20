@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use App\Models\SalaryAdvanced;
 use Illuminate\Http\Request;
+use App\Models\SalaryAdvanced;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SalaryAdvController extends Controller
 {
-     public function index()
+    public function index()
     {
         $data = SalaryAdvanced::all();
         return response()->json([
@@ -19,10 +20,11 @@ class SalaryAdvController extends Controller
 
     public function store(Request $request)
     {
-        $data = SalaryAdvanced::create($request->all());
+
+        $salary = SalaryAdvanced::create($request->all() + ['user_id' => Auth::id()]);
         return response()->json([
             'status' => 'Success',
-            'data' => $data
+            'data' => $salary
         ], 200);
     }
 
@@ -37,7 +39,7 @@ class SalaryAdvController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = SalaryAdvanced::findOrFail($id);
+        $data = SalaryAdvanced::where('user_id', Auth::id())->find($id);
         $data->update($request->all());
         return response()->json([
             'status' => 'Success',

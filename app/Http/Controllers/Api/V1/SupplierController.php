@@ -24,7 +24,6 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
 
-
         $Supplier = Supplier::create($request->all() + ['user_id' => Auth::id()]);
 
         return response()->json([

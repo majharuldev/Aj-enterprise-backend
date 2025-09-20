@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PriceRate extends Model
 {
-    //
+    protected $guarded=[''];
 }

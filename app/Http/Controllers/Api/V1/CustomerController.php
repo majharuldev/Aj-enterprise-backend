@@ -25,8 +25,9 @@ class CustomerController extends Controller
             'mobile' => $request->mobile,
             'email' => $request->email,
             'address' => $request->address,
-            'Opening_balance' => $request->Opening_balance,
+            'opening_balance' => $request->opening_balance,
             'status' => $request->status,
+            'rate' => $request->rate,
             'created_by' => $request->created_by,
 
         ]);

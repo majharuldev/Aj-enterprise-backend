@@ -16,9 +16,12 @@ use App\Http\Controllers\Api\V1\DailyExpenseController;
 use App\Http\Controllers\Api\V1\DriverLedgerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\HelperController;
+use App\Http\Controllers\Api\V1\OfficeController;
 use App\Http\Controllers\Api\V1\OfficeLedgerController;
 use App\Http\Controllers\Api\V1\PaymentRecieveController;
 use App\Http\Controllers\Api\V1\PriceRateController;
+use App\Http\Controllers\Api\V1\RentVehicleController;
+use App\Http\Controllers\Api\V1\SalaryAdvController;
 use App\Http\Controllers\Api\V1\SupplierController;
 use App\Http\Controllers\Api\V1\SupplierLedgerController;
 use App\Http\Controllers\Api\V1\VendorController;
@@ -56,6 +59,9 @@ Route::prefix('v1')->group(function () {
 
         // vehicle
         Route::apiResource('vehicle', VehicleController::class);
+
+        // rent vehicle
+        Route::apiResource('rentVehicle', RentVehicleController::class);
 
         // trip
         Route::apiResource('trip', TripController::class);
@@ -101,7 +107,16 @@ Route::prefix('v1')->group(function () {
         //   Customer Ledger 
         Route::apiResource('customerLedger', CustomerLedgerController::class);
 
+
+        //   salary advanced
+
+        Route::apiResource('salaryAdvanced', SalaryAdvController::class);
+
+
         // rate
         Route::apiResource('rate', PriceRateController::class);
+
+        // office
+        Route::apiResource('office', OfficeController::class);
     });
 });

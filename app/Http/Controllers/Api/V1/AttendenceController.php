@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Models\Attendence;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AttendenceController extends Controller
 {
-   public function index()
+    public function index()
     {
         $data = Attendence::all();
         return response()->json([
@@ -19,12 +20,20 @@ class AttendenceController extends Controller
 
     public function store(Request $request)
     {
-        $data = Attendence::create($request->all());
+        $data = Attendence::create([
+            'user_id' => Auth::id(),
+            'employee_id' => $request->employee_id,
+            'working_day' => $request->working_day,
+            'month' => $request->month,
+            'created_by' =>  Auth::id(),  // Authenticated user ID
+        ]);
+
         return response()->json([
             'status' => 'Success',
             'data' => $data
         ], 200);
     }
+
 
     public function show($id)
     {
@@ -54,4 +63,3 @@ class AttendenceController extends Controller
         ], 200);
     }
 }
-

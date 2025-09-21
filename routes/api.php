@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AttendenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +16,14 @@ use App\Http\Controllers\Api\V1\MaintainceController;
 use App\Http\Controllers\Api\V1\DailyExpenseController;
 use App\Http\Controllers\Api\V1\DriverLedgerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\FundTransferController;
 use App\Http\Controllers\Api\V1\HelperController;
 use App\Http\Controllers\Api\V1\OfficeController;
 use App\Http\Controllers\Api\V1\OfficeLedgerController;
+use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\PaymentRecieveController;
 use App\Http\Controllers\Api\V1\PriceRateController;
+use App\Http\Controllers\Api\V1\PurchaseController;
 use App\Http\Controllers\Api\V1\RentVehicleController;
 use App\Http\Controllers\Api\V1\SalaryAdvController;
 use App\Http\Controllers\Api\V1\SupplierController;
@@ -46,7 +50,13 @@ Route::prefix('v1')->group(function () {
 
 
         // daily expense
-        Route::apiResource('payments', DailyExpenseController::class);
+        Route::apiResource('expense', DailyExpenseController::class);
+
+        // payments
+        Route::apiResource('payments', PaymentController::class);
+
+        // purchase
+        Route::apiResource('purchase', PurchaseController::class);
 
         // parts route
         Route::apiResource('parts', PartsController::class);
@@ -113,10 +123,16 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('salaryAdvanced', SalaryAdvController::class);
 
 
+        Route::apiResource('attendence', AttendenceController::class);
+
+
         // rate
         Route::apiResource('rate', PriceRateController::class);
 
         // office
         Route::apiResource('office', OfficeController::class);
+
+        // fundtransfer
+        Route::apiResource('fundTransfer', FundTransferController::class);
     });
 });

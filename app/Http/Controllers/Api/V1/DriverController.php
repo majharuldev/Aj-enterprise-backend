@@ -47,32 +47,32 @@ class DriverController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $driver = Driver::where('user_id', Auth::id())->find($id);
-    if (!$driver) {
-        return response()->json(['message' => 'Driver not found'], 404);
+    {
+        $driver = Driver::where('user_id', Auth::id())->find($id);
+        if (!$driver) {
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        // এখানে driver অবজেক্টের উপরই update চালাও
+        $driver->update([
+            'user_id'          => Auth::id(),
+            'driver_name'      => $request->driver_name,
+            'driver_mobile'    => $request->driver_mobile,
+            'emergency_contact' => $request->emergency_contact,
+            'opening_balance'  => $request->opening_balance,
+            'nid'              => $request->nid,
+            'address'          => $request->address,
+            'note'             => $request->note,
+            'lincense'         => $request->lincense, // এখানে কন্ডিশন দিলে আগেরটা থাকবে
+            'expire_date'      => $request->expire_date,
+            'status'           => $request->status,
+        ]);
+
+        return response()->json([
+            'message' => 'Driver updated successfully',
+            'data'    => $driver->fresh() // আপডেটেড ডেটা দেখাবে
+        ]);
     }
-
-    // এখানে driver অবজেক্টের উপরই update চালাও
-    $driver->update([
-        'user_id'          => Auth::id(),
-        'driver_name'      => $request->driver_name,
-        'driver_mobile'    => $request->driver_mobile,
-        'emergency_contact'=> $request->emergency_contact,
-        'opening_balance'  => $request->opening_balance,
-        'nid'              => $request->nid,
-        'address'          => $request->address,
-        'note'             => $request->note,
-        'lincense'         => $request->lincense, // এখানে কন্ডিশন দিলে আগেরটা থাকবে
-        'expire_date'      => $request->expire_date,
-        'status'           => $request->status,
-    ]);
-
-    return response()->json([
-        'message' => 'Driver updated successfully',
-        'data'    => $driver->fresh() // আপডেটেড ডেটা দেখাবে
-    ]);
-}
 
 
     public function destroy($id)

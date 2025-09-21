@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Payment;
+use App\Models\OfficeLedger;
 use Illuminate\Http\Request;
 use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\OfficeLedger;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -32,6 +33,7 @@ class PaymentController extends Controller
             $new_amount = $request->total_amount - $request->pay_amount;
 
             $payment->update([
+                'user_id' => Auth::id(),
                 'date'          => $request->created_at ?? now(),
                 'supplier_name' => $request->supplier_name,
                 'category'      => $request->category,
@@ -49,6 +51,7 @@ class PaymentController extends Controller
             ]);
 
             SupplierLedger::create([
+                'user_id' => Auth::id(),
                 'date'          => $request->created_at ?? now(),
                 'payment_id'    => $payment->id,
                 'supplier_name' => $request->supplier_name,
@@ -57,6 +60,7 @@ class PaymentController extends Controller
             ]);
 
             OfficeLedger::create([
+                'user_id' => Auth::id(),
                 'date'         => $request->created_at ?? now(),
                 'branch_name'  => $request->branch_name,
                 'payment_id'  => $payment->id,
@@ -112,5 +116,3 @@ class PaymentController extends Controller
         ], 200);
     }
 }
-
-

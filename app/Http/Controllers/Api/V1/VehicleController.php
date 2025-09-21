@@ -17,44 +17,26 @@ class VehicleController extends Controller
     }
 
     // Store a new vehicle
- public function store(Request $request)
+public function store(Request $request)
 {
     try {
-        $validated = $request->validate([
-            'date'             => 'required|date',
-            'driver_name'      => 'required|string|max:255',
-            'vehicle_name'     => 'required|string|max:255',
-            'insurance_date'   => 'nullable|date',
-            'vehicle_size'     => 'required|string|max:100',
-            'vehicle_category' => 'required|string|max:100',
-            'reg_zone'         => 'required|string|max:50',
-            'reg_serial'       => 'required|string|max:50',
-            'reg_no'           => 'required|string|max:50',
-            'reg_date'         => 'required|date',
-            'status'           => 'required|string|max:50',
-            'tax_date'         => 'nullable|date',
-            'route_per_date'   => 'nullable|date',
-            'fitness_date'     => 'nullable|date',
-            'fuel_capcity'     => 'nullable|numeric',
-        ]);
-
         $vehicle = Vehicle::create([
             'user_id'          => Auth::id(),
-            'date'             => $validated['date'],
-            'driver_name'      => $validated['driver_name'],
-            'vehicle_name'     => $validated['vehicle_name'],
-            'insurance_date'   => $validated['insurance_date'] ?? null,
-            'vehicle_size'     => $validated['vehicle_size'],
-            'vehicle_category' => $validated['vehicle_category'],
-            'reg_zone'         => $validated['reg_zone'],
-            'reg_serial'       => $validated['reg_serial'],
-            'reg_no'           => $validated['reg_no'],
-            'reg_date'         => $validated['reg_date'],
-            'status'           => $validated['status'],
-            'tax_date'         => $validated['tax_date'] ?? null,
-            'route_per_date'   => $validated['route_per_date'] ?? null,
-            'fitness_date'     => $validated['fitness_date'] ?? null,
-            'fuel_capcity'     => $validated['fuel_capcity'] ?? null,
+            'date'             => $request->date,
+            'driver_name'      => $request->driver_name,
+            'vehicle_name'     => $request->vehicle_name,
+            'insurance_date'   => $request->insurance_date ?? null,
+            'vehicle_size'     => $request->vehicle_size,
+            'vehicle_category' => $request->vehicle_category,
+            'reg_zone'         => $request->reg_zone,
+            'reg_serial'       => $request->reg_serial,
+            'reg_no'           => $request->reg_no,
+            'reg_date'         => $request->reg_date,
+            'status'           => $request->status,
+            'tax_date'         => $request->tax_date,
+            'route_per_date'   => $request->route_per_date ,
+            'fitness_date'     => $request->fitness_date ,
+            'fuel_capcity'     => $request->fuel_capcity ,
         ]);
 
         return response()->json([
@@ -70,8 +52,9 @@ class VehicleController extends Controller
             'error' => $e->getMessage()
         ], 500);
     }
-}
 
+
+}
 
 
     // Show single vehicle
@@ -86,17 +69,46 @@ class VehicleController extends Controller
     }
 
     // Update vehicle
-    public function update(Request $request, $id)
-    {
-        $vehicle = Vehicle::where('user_id', Auth::id())->find($id);
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found'], 404);
-        }
+   public function update(Request $request, $id)
+{
+    try {
+        // যেটা আপডেট করতে হবে সেই Vehicle বের করো
+        $vehicle = Vehicle::findOrFail($id);
 
-        $vehicle->update($request->all());
+        // আপডেট করো
+        $vehicle->update([
+            'user_id'          => Auth::id(), // চাইলে user_id ফিক্সড করে দিতে পারেন
+            'date'             => $request->date,
+            'driver_name'      => $request->driver_name,
+            'vehicle_name'     => $request->vehicle_name,
+            'insurance_date'   => $request->insurance_date ?? null,
+            'vehicle_size'     => $request->vehicle_size,
+            'vehicle_category' => $request->vehicle_category,
+            'reg_zone'         => $request->reg_zone,
+            'reg_serial'       => $request->reg_serial,
+            'reg_no'           => $request->reg_no,
+            'reg_date'         => $request->reg_date,
+            'status'           => $request->status,
+            'tax_date'         => $request->tax_date,
+            'route_per_date'   => $request->route_per_date,
+            'fitness_date'     => $request->fitness_date,
+            'fuel_capcity'     => $request->fuel_capcity ,
+        ]);
 
-        return response()->json(['message' => 'Vehicle updated successfully', 'data' => $vehicle]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle updated successfully',
+            'data'    => $vehicle
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Server Error',
+            'error'   => $e->getMessage()
+        ], 500);
     }
+}
 
     // Delete vehicle
     public function destroy($id)

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->BigInteger('user_id'); // vehicle belongs to a user
             $table->string('date');
+            $table->string('branch_name');
             $table->string('particulars');
             $table->string('payment_category');
             $table->string('paid_to');

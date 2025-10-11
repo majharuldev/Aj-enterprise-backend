@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->BigInteger('user_id');
             $table->string('branch_name')->nullable();
+            $table->string('opening_balance')->nullable();
             $table->string('address')->nullable();
             $table->string('created_by')->nullable();
             $table->timestamps();

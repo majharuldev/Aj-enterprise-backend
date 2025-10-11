@@ -37,7 +37,7 @@ class OfficeController extends Controller
     // single data read
     public function show($id)
     {
-        $Office = Office::where('user_id', Auth::id())->find($id);
+        $Office = Office::find($id);
         if (!$Office) {
             return response()->json(['success' => false, 'message' => 'Office not found'], 404);
         }
@@ -48,7 +48,7 @@ class OfficeController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $Office = Office::where('user_id', Auth::id())->find($id);
+        $Office = Office::find($id);
         if (!$Office) {
             return response()->json(['success' => false, 'message' => 'Office not found'], 404);
         }
@@ -61,7 +61,7 @@ class OfficeController extends Controller
     // delete record
     public function destroy($id)
     {
-        $Office = Office::where('user_id', Auth::id())->find($id);
+        $Office = Office::find($id);
         if (!$Office) {
             return response()->json(['success' => false, 'message' => 'Office not found'], 404);
         }

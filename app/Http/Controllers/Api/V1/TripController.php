@@ -64,7 +64,7 @@ class TripController extends Controller
                 'remarks'          => $request->remarks,
                 'food_cost'        => $request->food_cost,
                 'total_exp'        => $request->total_exp,
-                'trip_rent'        => $request->trip_rent,
+                'total_rent'        => $request->total_rent,
                 'vendor_rent'      => $request->vendor_rent,
                 'advance'          => $request->advance,
                 'due_amount'       => $request->due_amount,
@@ -86,7 +86,7 @@ class TripController extends Controller
             if ($request->transport_type === "own_transport") {
                 DriverLedger::create([
                     'user_id'          => Auth::id(),
-                    'date'             => $request->date,
+                    'date'             => $request->start_date,
                     'driver_name'      => $request->driver_name,
                     'trip_id'          => $trip->id,
                     'load_point'       => $request->load_point,
@@ -106,7 +106,7 @@ class TripController extends Controller
             } else {
                 VendorLedger::create([
                     'user_id'     => Auth::id(),
-                    'date'        => $request->date,
+                    'date'        => $request->start_date,
                     'driver_name' => $request->driver_name,
                     'trip_id'     => $trip->id,
                     'load_point'  => $request->load_point,
@@ -114,7 +114,7 @@ class TripController extends Controller
                     'customer'    => $request->customer,
                     'vendor_name' => $request->vendor_name,
                     'vehicle_no'  => $request->vehicle_no,
-                    'trip_rent'   => $request->trip_rent,   // fixed
+                    'total_rent'   => $request->total_rent,   // fixed
                     'advance'     => $request->advance,
                     'due_amount'  => $request->due_amount,
                 ]);
@@ -123,7 +123,7 @@ class TripController extends Controller
             // Insert into branch ledgers
             OfficeLedger::create([
                 'user_id'     => Auth::id(),
-                'date'        => $request->date,
+                'date'        => $request->start_date,
                 'unload_point' => $request->unload_point,
                 'load_point'  => $request->load_point,
                 'customer'    => $request->customer,
@@ -136,14 +136,14 @@ class TripController extends Controller
 
             CustomerLedger::create([
                 'user_id'          => Auth::id(),
-                'working_date'  => $request->date,  // fixed spelling
+                'working_date'  => $request->start_date,  // fixed spelling
                 'customer_name' => $request->customer,
                 'trip_id'       => $trip->id,
                 'chalan'       => $request->challan,
                 'load_point'    => $request->load_point,
                 'unload_point'  => $request->unload_point,
                 'vehicle_no'    => $request->vehicle_no,
-                'bill_amount'   => $request->trip_rent, // fixed
+                'bill_amount'   => $request->total_rent, // fixed
                 'driver_name'   => $request->driver_name,
             ]);
 
@@ -208,7 +208,7 @@ class TripController extends Controller
                 'remarks'          => $request->remarks,
                 'food_cost'        => $request->food_cost,
                 'total_exp'        => $request->total_exp,
-                'trip_rent'        => $request->trip_rent,
+                'total_rent'        => $request->total_rent,
                 'vendor_rent'      => $request->vendor_rent,
                 'advance'          => $request->advance,
                 'due_amount'       => $request->due_amount,
@@ -232,7 +232,7 @@ class TripController extends Controller
                     ['trip_id' => $trip->id], // condition
                     [
                         'user_id'          => Auth::id(),
-                        'date'             => $request->date,
+                        'date'             => $request->start_date,
                         'driver_name'      => $request->driver_name,
                         'load_point'       => $request->load_point,
                         'unload_point'     => $request->unload_point,
@@ -254,14 +254,14 @@ class TripController extends Controller
                     ['trip_id' => $trip->id], // condition
                     [
                         'user_id'     => Auth::id(),
-                        'date'        => $request->date,
+                        'date'        => $request->start_date,
                         'driver_name' => $request->driver_name,
                         'load_point'  => $request->load_point,
                         'unload_point' => $request->unload_point,
                         'customer'    => $request->customer,
                         'vendor_name' => $request->vendor_name,
                         'vehicle_no'  => $request->vehicle_no,
-                        'trip_rent'   => $request->trip_rent,
+                        'total_rent'   => $request->total_rent,
                         'advance'     => $request->advance,
                         'due_amount'  => $request->due_amount,
                     ]
@@ -273,7 +273,7 @@ class TripController extends Controller
                 ['trip_id' => $trip->id],
                 [
                     'user_id'     => Auth::id(),
-                    'date'        => $request->date,
+                    'date'        => $request->start_date,
                     'unload_point' => $request->unload_point,
                     'load_point'  => $request->load_point,
                     'customer'    => $request->customer,
@@ -288,13 +288,13 @@ class TripController extends Controller
             CustomerLedger::updateOrCreate(
                 ['trip_id' => $trip->id],
                 [
-                    'working_date'  => $request->date,
+                    'working_date'  => $request->start_date,
                     'customer_name' => $request->customer,
                     'chalan'       => $request->challan,
                     'load_point'    => $request->load_point,
                     'unload_point'  => $request->unload_point,
                     'vehicle_no'    => $request->vehicle_no,
-                    'bill_amount'   => $request->trip_rent,
+                    'bill_amount'   => $request->total_rent,
                     'driver_name'   => $request->driver_name,
                 ]
             );

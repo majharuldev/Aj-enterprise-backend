@@ -32,7 +32,7 @@ class FundTransferController extends Controller
                 'user_id' => Auth::id(),
                 'date' => $request->date,
                 'purpose'        => $request->purpose,
-                'branch'  => $request->branch,
+                'branch_name'  => $request->branch_name,
                 'person_name'  => $request->person_name,
                 'type' => $request->type,
                 'amount' => $request->amount,
@@ -44,12 +44,12 @@ class FundTransferController extends Controller
 
             // Insert into branch_ledgers
             OfficeLedger::create([
-                 'user_id' => Auth::id(),
+                'user_id' => Auth::id(),
                 'date'        => $request->date,
                 'accounts_id' => $FundTransfer->id,
-                'branch_name' => $request->branch,
+                'branch_name' => $request->branch_name,
                 'cash_in'     => $request->amount,
-                  'remarks'     => $request->remarks,
+                'remarks'     => $request->remarks,
                 'created_by'  => $request->created_by,
             ]);
 
@@ -108,11 +108,11 @@ class FundTransferController extends Controller
             // Update Branch_Ledger
             OfficeLedger::where('accounts_id', $FundTransfer->id)
                 ->update([
-                     'user_id' => Auth::id(),
+                    'user_id' => Auth::id(),
                     'date'        => $request->date,
-                    'branch_name' => $request->branch,
+                    'branch_name' => $request->branch_name,
                     'cash_in'     => $request->amount,
-                      'remarks'     => $request->remarks,
+                    'remarks'     => $request->remarks,
                     'created_by'  => $request->created_by,
                 ]);
 

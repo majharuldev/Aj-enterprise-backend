@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('trip_id')->nullable();
             $table->string('bill_date')->nullable();
             $table->string('working_date')->nullable();
+            $table->string('customer_name')->nullable();
             $table->string('vehicle_no')->nullable();
             $table->string('load_point')->nullable();
             $table->string('unload_point')->nullable();

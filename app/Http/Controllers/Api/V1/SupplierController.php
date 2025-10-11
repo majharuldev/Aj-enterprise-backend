@@ -36,7 +36,7 @@ class SupplierController extends Controller
     // single data read
     public function show($id)
     {
-        $Supplier = Supplier::where('user_id', Auth::id())->find($id);
+        $Supplier = Supplier::find($id);
         if (!$Supplier) {
             return response()->json(['success' => false, 'message' => 'Supplier not found'], 404);
         }
@@ -47,7 +47,7 @@ class SupplierController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $Supplier = Supplier::where('user_id', Auth::id())->find($id);
+        $Supplier = Supplier::find($id);
         if (!$Supplier) {
             return response()->json(['success' => false, 'message' => 'Supplier not found'], 404);
         }
@@ -60,7 +60,7 @@ class SupplierController extends Controller
     // delete record
     public function destroy($id)
     {
-        $Supplier = Supplier::where('user_id', Auth::id())->find($id);
+        $Supplier = Supplier::find($id);
         if (!$Supplier) {
             return response()->json(['success' => false, 'message' => 'Supplier not found'], 404);
         }

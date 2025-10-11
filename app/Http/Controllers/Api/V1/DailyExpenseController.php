@@ -26,6 +26,7 @@ class DailyExpenseController extends Controller
             'date' => $request->date,
             'particulars' => $request->particulars,
             'payment_category' => $request->payment_category,
+            'branch_name' => $request->branch_name,
             'paid_to' => $request->paid_to,
             'amount' => $request->amount,
             'status' => $request->status,

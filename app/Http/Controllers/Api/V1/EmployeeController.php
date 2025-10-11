@@ -38,7 +38,7 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
-        $Employee = Employee::where('user_id', Auth::id())->find($id);
+        $Employee = Employee::find($id);
         if (!$Employee) {
             return response()->json(['success' => false, 'message' => 'Employee not found'], 404);
         }
@@ -47,7 +47,7 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $Employee = Employee::where('user_id', Auth::id())->find($id);
+        $Employee = Employee::find($id);
         if (!$Employee) {
             return response()->json(['success' => false, 'message' => 'Employee not found'], 404);
         }
@@ -58,7 +58,7 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $Employee = Employee::where('user_id', Auth::id())->find($id);
+        $Employee = Employee::find($id);
         if (!$Employee) {
             return response()->json(['success' => false, 'message' => 'Employee not found'], 404);
         }

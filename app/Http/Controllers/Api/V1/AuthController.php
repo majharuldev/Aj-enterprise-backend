@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
-use App\Http\Controllers\Controller; 
+
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,15 +12,33 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // $user = User::where('email', $request->email)->first();
+
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     return response()->json(['message' => 'Invalid credentials'], 401);
+        // }
+
+        // $token = $user->createToken('api-token')->plainTextToken;
+
+        // return response()->json(['token' => $token]);
+
+
         $user = User::where('email', $request->email)->first();
 
+        // Check credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        // Create token
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        // Return user info along with token
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => $user
+        ], 200);
     }
 
 
@@ -52,11 +71,41 @@ class AuthController extends Controller
             'message' => 'Registration successful',
             'token' => $token,
             'user' => $user
-           
+
         ]);
     }
 
+    // public function show($user)
+    //     {
+    //         $user = User::find($user);
 
+    //         if (!$user) {
+    //             return response()->json(['message' => 'User not found.'], 404);
+    //         }
+
+    //         return response()->json($user);
+    //     }
+
+
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'user not found'], 404);
+        }
+
+        $user->update($request->all());
+        return response()->json(['success' => true, 'message' => 'user updated successfully', 'data' => $user]);
+    }
 
     public function index()
     {

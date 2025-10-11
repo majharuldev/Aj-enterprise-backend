@@ -16,6 +16,7 @@ return new class extends Migration
             $table->BigInteger('user_id');
             $table->string('email')->nullable();
             $table->string('join_date')->nullable();
+            $table->string('employee_name')->nullable();
             $table->string('designation')->nullable();
             $table->string('gender')->nullable();
             $table->string('mobile')->nullable();  

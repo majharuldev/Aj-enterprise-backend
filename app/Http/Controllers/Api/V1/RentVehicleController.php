@@ -37,7 +37,7 @@ class RentVehicleController extends Controller
     // single data read
     public function show($id)
     {
-        $RentVehicle = RentVehicle::where('user_id', Auth::id())->find($id);
+        $RentVehicle = RentVehicle::find($id);
         if (!$RentVehicle) {
             return response()->json(['success' => false, 'message' => 'RentVehicle not found'], 404);
         }
@@ -48,7 +48,7 @@ class RentVehicleController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $RentVehicle = RentVehicle::where('user_id', Auth::id())->find($id);
+        $RentVehicle = RentVehicle::find($id);
         if (!$RentVehicle) {
             return response()->json(['success' => false, 'message' => 'RentVehicle not found'], 404);
         }

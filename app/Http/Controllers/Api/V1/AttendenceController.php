@@ -25,7 +25,7 @@ class AttendenceController extends Controller
             'employee_id' => $request->employee_id,
             'working_day' => $request->working_day,
             'month' => $request->month,
-            'created_by' =>  Auth::id(),  // Authenticated user ID
+            'created_by' =>$request->created_by  ,  // Authenticated user ID
         ]);
 
         return response()->json([

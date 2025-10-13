@@ -39,7 +39,7 @@ class DriverController extends Controller
 
     public function show($id)
     {
-        $driver = Driver::where('user_id', Auth::id())->find($id);
+        $driver = Driver::find($id);
         if (!$driver) {
             return response()->json(['message' => 'Driver not found'], 404);
         }
@@ -48,7 +48,7 @@ class DriverController extends Controller
 
     public function update(Request $request, $id)
     {
-        $driver = Driver::where('user_id', Auth::id())->find($id);
+        $driver = Driver::find($id);
         if (!$driver) {
             return response()->json(['message' => 'Driver not found'], 404);
         }

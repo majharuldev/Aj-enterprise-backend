@@ -10,7 +10,7 @@ class MaintainceController extends Controller
 {
     public function index()
     {
-        $logs = Maintaince::where('user_id', Auth::id())->latest()->get();
+        $logs = Maintaince::latest()->get();
         return response()->json($logs);
     }
 
@@ -41,7 +41,7 @@ class MaintainceController extends Controller
     // Optional: Show single log
     public function show($id)
     {
-        $log = Maintaince::where('user_id', Auth::id())->find($id);
+        $log = Maintaince::find($id);
         if (!$log) {
             return response()->json(['message' => 'Log not found'], 404);
         }
@@ -51,7 +51,7 @@ class MaintainceController extends Controller
     // Optional: Update
     public function update(Request $request, $id)
     {
-        $log = Maintaince::where('user_id', Auth::id())->find($id);
+        $log = Maintaince::find($id);
         if (!$log) {
             return response()->json(['message' => 'Log not found'], 404);
         }

@@ -12,7 +12,7 @@ class PriceRateController extends Controller
     // get all Data by userid
     public function index()
     {
-        $PriceRates = PriceRate::where('user_id', Auth::id())->latest()->get();
+        $PriceRates = PriceRate::latest()->get();
         return response()->json([
             'success' => true,
             'data' => $PriceRates
@@ -36,7 +36,7 @@ class PriceRateController extends Controller
     // single data read
     public function show($id)
     {
-        $PriceRate = PriceRate::where('user_id', Auth::id())->find($id);
+        $PriceRate = PriceRate::find($id);
         if (!$PriceRate) {
             return response()->json(['success' => false, 'message' => 'PriceRate not found'], 404);
         }
@@ -47,7 +47,7 @@ class PriceRateController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $PriceRate = PriceRate::where('user_id', Auth::id())->find($id);
+        $PriceRate = PriceRate::find($id);
         if (!$PriceRate) {
             return response()->json(['success' => false, 'message' => 'PriceRate not found'], 404);
         }

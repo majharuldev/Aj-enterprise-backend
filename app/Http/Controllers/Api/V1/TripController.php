@@ -169,7 +169,7 @@ class TripController extends Controller
 
     public function show($id)
     {
-        $trip = trip::where('user_id', Auth::id())->find($id);
+        $trip = trip::find($id);
         if (!$trip) {
             return response()->json(['message' => 'Trip not found'], 404);
         }
@@ -324,7 +324,7 @@ class TripController extends Controller
 
         try {
             // Find the trip belonging to the authenticated user
-            $trip = Trip::where('user_id', Auth::id())->find($id);
+            $trip = Trip::find($id);
 
             if (!$trip) {
                 return response()->json(['message' => 'Trip not found'], 404);

@@ -34,7 +34,7 @@ class FuelController extends Controller
     // Optional: View single fuel record
     public function show($id)
     {
-        $fuel = Fuel::where('user_id', Auth::id())->find($id);
+        $fuel = Fuel::find($id);
         if (!$fuel) {
             return response()->json(['message' => 'Fuel record not found'], 404);
         }
@@ -44,7 +44,7 @@ class FuelController extends Controller
     // Optional: Update fuel record
     public function update(Request $request, $id)
     {
-        $fuel = Fuel::where('user_id', Auth::id())->find($id);
+        $fuel = Fuel::find($id);
         if (!$fuel) {
             return response()->json(['message' => 'Fuel record not found'], 404);
         }
@@ -57,7 +57,7 @@ class FuelController extends Controller
     // Optional: Delete
     public function destroy($id)
     {
-        $fuel = Fuel::where('user_id', Auth::id())->find($id);
+        $fuel = Fuel::find($id);
         if (!$fuel) {
             return response()->json(['message' => 'Fuel record not found'], 404);
         }

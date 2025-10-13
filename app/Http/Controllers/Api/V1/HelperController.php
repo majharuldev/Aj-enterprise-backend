@@ -38,7 +38,7 @@ class HelperController extends Controller
     // single data read
     public function show($id)
     {
-        $Helper = Helper::where('user_id', Auth::id())->find($id);
+        $Helper = Helper::find($id);
         if (!$Helper) {
             return response()->json(['success' => false, 'message' => 'Helper not found'], 404);
         }
@@ -49,7 +49,7 @@ class HelperController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $Helper = Helper::where('user_id', Auth::id())->find($id);
+        $Helper = Helper::find($id);
         if (!$Helper) {
             return response()->json(['success' => false, 'message' => 'Helper not found'], 404);
         }
@@ -62,7 +62,7 @@ class HelperController extends Controller
     // delete record
     public function destroy($id)
     {
-        $Helper = Helper::where('user_id', Auth::id())->find($id);
+        $Helper = Helper::find($id);
         if (!$Helper) {
             return response()->json(['success' => false, 'message' => 'Helper not found'], 404);
         }

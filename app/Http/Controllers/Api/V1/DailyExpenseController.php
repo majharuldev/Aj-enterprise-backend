@@ -42,14 +42,14 @@ class DailyExpenseController extends Controller
     // 🔹 Show single DailyExpense
     public function show($id)
     {
-        $DailyExpense = DailyExpense::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $DailyExpense = DailyExpense::find($id);
         return response()->json($DailyExpense);
     }
 
     // 🔹 Update DailyExpense
     public function update(Request $request, $id)
     {
-        $DailyExpense = DailyExpense::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $DailyExpense = DailyExpense::find($id);
 
         $DailyExpense->update($request->only([
             'date',
@@ -66,7 +66,7 @@ class DailyExpenseController extends Controller
     // 🔹 Delete DailyExpense
     public function destroy($id)
     {
-        $DailyExpense = DailyExpense::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $DailyExpense = DailyExpense::find($id);
         $DailyExpense->delete();
 
         return response()->json(['message' => 'DailyExpense deleted']);

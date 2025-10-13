@@ -27,89 +27,92 @@ class PurchaseController extends Controller
 
 
 
-   public function store(Request $request)
-{
-    DB::beginTransaction();
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
 
-    try {
-        // Insert into purchases table
-        $purchase = Purchase::create([
-            'user_id'          => Auth::id(),
-            'date'             => $request->date,
-            'supplier_name'    => $request->supplier_name,
-            'category'         => $request->category,
-            'item_name'        => $request->item_name,
-            'quantity'         => $request->quantity,
-            'unit_price'       => $request->unit_price,
-            'purchase_amount'  => $request->purchase_amount,
-            'remarks'          => $request->remarks,
-            'driver_name'      => $request->driver_name,
-            'branch_name'      => $request->branch_name,
-            'vehicle_no'       => $request->vehicle_no,
-            'vehicle_category' => $request->vehicle_category,
-            'priority'         => $request->priority,
-            'validity'         => $request->validity,
-            'status'           => 'pending',
-            'created_by'       => Auth::id(),
-        ]);
+        try {
+            // Insert into purchases table
+            $purchase = Purchase::create([
+                'user_id'          => Auth::id(),
+                'date'             => $request->date,
+                'supplier_name'    => $request->supplier_name,
+                'category'         => $request->category,
+                'item_name'        => $request->item_name,
+                'quantity'         => $request->quantity,
+                'unit_price'       => $request->unit_price,
+                'purchase_amount'  => $request->purchase_amount,
+                'remarks'          => $request->remarks,
+                'driver_name'      => $request->driver_name,
+                'branch_name'      => $request->branch_name,
+                'vehicle_no'       => $request->vehicle_no,
+                'vehicle_category' => $request->vehicle_category,
+                'priority'         => $request->priority,
+                'validity'         => $request->validity,
+                'next_service_date'         => $request->next_service_date,
+                'service_date'         => $request->service_date,
+                'last_km'         => $request->last_km,
+                'next_km'         => $request->next_km,
+                'status'           => 'pending',
+                'created_by'       => Auth::id(),
+            ]);
 
-        $ledger = SupplierLedger::create([
-            'user_id'        => Auth::id(),
-            'date'           => $request->date,
-            'mode'           => 'Purchase',
-            'purchase_id'    => $purchase->id,
-            'purchase_amount'=> $request->purchase_amount,
-            'unit_price'     => $request->unit_price,
-            'created_by'     => Auth::id(),
-            'catagory'       => $request->category,
-            'supplier_name'  => $request->supplier_name,
-            'item_name'      => $request->item_name,
-            'quantity'       => $request->quantity,
-            'remarks'        => $request->remarks,
-        ]);
+            $ledger = SupplierLedger::create([
+                'user_id'        => Auth::id(),
+                'date'           => $request->date,
+                'mode'           => 'Purchase',
+                'purchase_id'    => $purchase->id,
+                'purchase_amount' => $request->purchase_amount,
+                'unit_price'     => $request->unit_price,
+                'created_by'     => Auth::id(),
+                'catagory'       => $request->category,
+                'supplier_name'  => $request->supplier_name,
+                'item_name'      => $request->item_name,
+                'quantity'       => $request->quantity,
+                'remarks'        => $request->remarks,
+            ]);
 
-        $payment = Payment::create([
-            'user_id'        => Auth::id(),
-            'date'           => $request->date,
-            'supplier_name'  => $request->supplier_name,
-            'category'       => $request->category,
-            'item_name'      => $request->item_name,
-            'purchase_id'    => $purchase->id,
-            'quantity'       => $request->quantity,
-            'unit_price'     => $request->unit_price,
-            'total_amount'   => $request->purchase_amount,
-            'pay_amount'     => 0,
-            'due_amount'     => $request->purchase_amount,
-            'remarks'        => $request->remarks,
-            'driver_name'    => $request->driver_name,
-            'branch_name'    => $request->branch_name,
-            'vehicle_no'     => $request->vehicle_no,
-            'status'         => 'pending',
-            'created_by'     => Auth::id(),
-        ]);
+            $payment = Payment::create([
+                'user_id'        => Auth::id(),
+                'date'           => $request->date,
+                'supplier_name'  => $request->supplier_name,
+                'category'       => $request->category,
+                'item_name'      => $request->item_name,
+                'purchase_id'    => $purchase->id,
+                'quantity'       => $request->quantity,
+                'unit_price'     => $request->unit_price,
+                'total_amount'   => $request->purchase_amount,
+                'pay_amount'     => 0,
+                'due_amount'     => $request->purchase_amount,
+                'remarks'        => $request->remarks,
+                'driver_name'    => $request->driver_name,
+                'branch_name'    => $request->branch_name,
+                'vehicle_no'     => $request->vehicle_no,
+                'status'         => 'pending',
+                'created_by'     => Auth::id(),
+            ]);
 
-        DB::commit();
+            DB::commit();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Purchase created successfully',
-            'data'    => [
-                'purchase' => $purchase,
-                'ledger'   => $ledger,
-                'payment'  => $payment,
-            ]
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase created successfully',
+                'data'    => [
+                    'purchase' => $purchase,
+                    'ledger'   => $ledger,
+                    'payment'  => $payment,
+                ]
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    } catch (\Exception $e) {
-        DB::rollBack();
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Something went wrong',
-            'error'   => $e->getMessage()
-        ], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
 
 
@@ -132,7 +135,7 @@ class PurchaseController extends Controller
         try {
             $purchase = Purchase::findOrFail($id);
 
-            
+
             $purchase->update([
                 'user_id' => Auth::id(),
                 'date'             => $request->date,
@@ -154,10 +157,14 @@ class PurchaseController extends Controller
                 'status'           => "pending",
                 'priority'           => $request->priority,
                 'validity'           => $request->validity,
+                'next_service_date'         => $request->next_service_date,
+                'service_date'         => $request->service_date,
+                'last_km'         => $request->last_km,
+                'next_km'         => $request->next_km,
                 'created_by'       => $request->created_by,
             ]);
 
-         
+
 
             // 4. Update supplier ledger
             SupplierLedger::updateOrCreate(
@@ -218,36 +225,33 @@ class PurchaseController extends Controller
         }
     }
 
-public function destroy($id)
-{
-    DB::beginTransaction();
+    public function destroy($id)
+    {
+        DB::beginTransaction();
 
-    try {
-        $purchase = Purchase::findOrFail($id);
+        try {
+            $purchase = Purchase::findOrFail($id);
 
-        // Delete related records first
-        SupplierLedger::where('purchase_id', $purchase->id)->delete();
-        Payment::where('purchase_id', $purchase->id)->delete();
+            // Delete related records first
+            SupplierLedger::where('purchase_id', $purchase->id)->delete();
+            Payment::where('purchase_id', $purchase->id)->delete();
 
-        // Delete purchase
-        $purchase->delete();
+            // Delete purchase
+            $purchase->delete();
 
-        DB::commit();
+            DB::commit();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Purchase deleted successfully'
-        ]);
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json([
-            'success' => false,
-            'message' => 'Something went wrong',
-            'error'   => $e->getMessage()
-        ], 500);
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
-}
-
-
 }

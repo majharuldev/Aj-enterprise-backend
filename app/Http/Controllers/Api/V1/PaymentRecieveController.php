@@ -86,7 +86,7 @@ class PaymentRecieveController extends Controller
 
     public function show($id)
     {
-        $Employee = PaymentRec::where('user_id', Auth::id())->find($id);
+        $Employee = PaymentRec::find($id);
         if (!$Employee) {
             return response()->json(['success' => false, 'message' => ' not found'], 404);
         }

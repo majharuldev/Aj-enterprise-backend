@@ -37,7 +37,7 @@ class CustomerController extends Controller
 
     public function show($id)
     {
-        $Customer = Customer::where('user_id', Auth::id())->find($id);
+        $Customer = Customer::find($id);
         if (!$Customer) {
             return response()->json(['message' => 'Customer not found'], 404);
         }
@@ -46,7 +46,7 @@ class CustomerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $Customer = Customer::where('user_id', Auth::id())->find($id);
+        $Customer = Customer::find($id);
         if (!$Customer) {
             return response()->json(['message' => 'Customer not found'], 404);
         }
@@ -57,7 +57,7 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
-        $Customer = Customer::where('user_id', Auth::id())->find($id);
+        $Customer = Customer::find($id);
         if (!$Customer) {
             return response()->json(['message' => 'Customer not found'], 404);
         }

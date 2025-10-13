@@ -47,7 +47,7 @@ class VendorController extends Controller
     // data update
     public function update(Request $request, $id)
     {
-        $Vendor = Vendor::where('user_id', Auth::id())->find($id);
+        $Vendor = Vendor::find($id);
         if (!$Vendor) {
             return response()->json(['success' => false, 'message' => 'Vendor not found'], 404);
         }
@@ -60,7 +60,7 @@ class VendorController extends Controller
     // delete record
     public function destroy($id)
     {
-        $Vendor = Vendor::where('user_id', Auth::id())->find($id);
+        $Vendor = Vendor::find($id);
         if (!$Vendor) {
             return response()->json(['success' => false, 'message' => 'Vendor not found'], 404);
         }

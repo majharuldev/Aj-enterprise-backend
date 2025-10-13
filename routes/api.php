@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\V1\SupplierController;
 use App\Http\Controllers\Api\V1\PriceRateController;
 use App\Http\Controllers\Api\V1\SalaryAdvController;
 use App\Http\Controllers\Api\V1\AttendenceController;
+use App\Http\Controllers\Api\V1\BonousController;
 use App\Http\Controllers\Api\V1\MaintainceController;
 use App\Http\Controllers\Api\V1\RentVehicleController;
 use App\Http\Controllers\Api\V1\DailyExpenseController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Api\V1\OfficeLedgerController;
 use App\Http\Controllers\Api\V1\VendorLedgerController;
 use App\Http\Controllers\Api\V1\VendorPaymentController;
 use App\Http\Controllers\Api\V1\CustomerLedgerController;
+use App\Http\Controllers\Api\V1\LoanController;
 use App\Http\Controllers\Api\V1\PaymentRecieveController;
 use App\Http\Controllers\Api\V1\SupplierLedgerController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -144,5 +146,11 @@ Route::prefix('v1')->group(function () {
 
     // fundtransfer
     Route::apiResource('fundTransfer', FundTransferController::class);
+
+    // loan controller 
+    Route::apiResource('loan', LoanController::class);
+
+    // bonous
+    Route::apiResource('bonous', BonousController::class);
   });
 });

@@ -23,7 +23,7 @@ class VendorPaymentController extends Controller
     }
 
 
-   
+
 
 
     public function store(Request $request)
@@ -157,7 +157,7 @@ class VendorPaymentController extends Controller
 
         try {
             // Find the VendorPayment record for the logged-in user
-            $payment = VendorPayment::where('user_id', Auth::id())->find($id);
+            $payment = VendorPayment::find($id);
 
             if (!$payment) {
                 return response()->json(['message' => 'Payment not found'], 404);

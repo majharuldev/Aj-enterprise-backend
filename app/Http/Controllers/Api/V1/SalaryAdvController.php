@@ -39,7 +39,7 @@ class SalaryAdvController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = SalaryAdvanced::where('user_id', Auth::id())->find($id);
+        $data = SalaryAdvanced::find($id);
         $data->update($request->all());
         return response()->json([
             'status' => 'Success',

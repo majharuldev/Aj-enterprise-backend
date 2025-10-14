@@ -16,6 +16,7 @@ return new class extends Migration
              $table->BigInteger('user_id');
             $table->string('employee_id')->nullable();
             $table->string('amount')->nullable();
+            $table->string('month_name')->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();
             $table->timestamps();

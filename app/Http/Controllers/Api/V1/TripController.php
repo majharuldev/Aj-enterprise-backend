@@ -76,6 +76,10 @@ class TripController extends Controller
                 'chada'            => $request->chada,
                 'labor'            => $request->labor,
                 'challan_cost'     => $request->challan_cost,
+                'fuel_cost'     => $request->fuel_cost,
+                'd_day'     => $request->d_day,
+                'd_amount'     => $request->d_amount,
+                'd_total'     => $request->d_total,
                 'others_cost'      => $request->others_cost,
                 'vendor_name'      => $request->vendor_name,
                 'additional_cost'  => $request->additional_cost,
@@ -99,6 +103,9 @@ class TripController extends Controller
                     'feri_cost'        => $request->feri_cost,
                     'police_cost'      => $request->police_cost,
                     'chada'            => $request->chada,
+                    'fuel_cost'     => $request->fuel_cost,
+                    'challan_cost'     => $request->challan_cost,
+
                     'others_cost'      => $request->others_cost,
                     'labor'            => $request->labor,
                     'total_exp'        => $request->total_exp,
@@ -143,7 +150,11 @@ class TripController extends Controller
                 'load_point'    => $request->load_point,
                 'unload_point'  => $request->unload_point,
                 'vehicle_no'    => $request->vehicle_no,
-                'bill_amount'   => $request->total_rent, // fixed
+                'bill_amount'   => $request->total_rent,
+                // fixed
+                'd_day'     => $request->d_day,
+                'd_amount'     => $request->d_amount,
+                'd_total'     => $request->d_total,
                 'driver_name'   => $request->driver_name,
             ]);
 
@@ -211,6 +222,11 @@ class TripController extends Controller
                 'total_rent'        => $request->total_rent,
                 'vendor_rent'      => $request->vendor_rent,
                 'advance'          => $request->advance,
+                'challan_cost'     => $request->challan_cost,
+                'fuel_cost'     => $request->fuel_cost,
+                'd_day'     => $request->d_day,
+                'd_amount'     => $request->d_amount,
+                'd_total'     => $request->d_total,
                 'due_amount'       => $request->due_amount,
                 'parking_cost'     => $request->parking_cost,
                 'night_guard'      => $request->night_guard,
@@ -244,6 +260,9 @@ class TripController extends Controller
                         'feri_cost'        => $request->feri_cost,
                         'police_cost'      => $request->police_cost,
                         'chada'            => $request->chada,
+                        'challan_cost'     => $request->challan_cost,
+                        'fuel_cost'     => $request->fuel_cost,
+
                         'others_cost'      => $request->others_cost,
                         'labor'            => $request->labor,
                         'total_exp'        => $request->total_exp,
@@ -288,13 +307,18 @@ class TripController extends Controller
             CustomerLedger::updateOrCreate(
                 ['trip_id' => $trip->id],
                 [
-                    'working_date'  => $request->start_date,
+                    'working_date'  => $request->start_date,  // fixed spelling
                     'customer_name' => $request->customer,
+                    'trip_id'       => $trip->id,
                     'chalan'       => $request->challan,
                     'load_point'    => $request->load_point,
                     'unload_point'  => $request->unload_point,
                     'vehicle_no'    => $request->vehicle_no,
                     'bill_amount'   => $request->total_rent,
+                    // fixed
+                    'd_day'     => $request->d_day,
+                    'd_amount'     => $request->d_amount,
+                    'd_total'     => $request->d_total,
                     'driver_name'   => $request->driver_name,
                 ]
             );

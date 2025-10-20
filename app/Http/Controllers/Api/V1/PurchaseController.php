@@ -49,12 +49,12 @@ class PurchaseController extends Controller
                 'vehicle_category' => $request->vehicle_category,
                 'priority'         => $request->priority,
                 'validity'         => $request->validity,
-                'next_service_date'         => $request->next_service_date,
-                'service_date'         => $request->service_date,
+                'next_service_date' => $request->next_service_date,
+                'service_date'        => $request->service_date,
                 'last_km'         => $request->last_km,
                 'next_km'         => $request->next_km,
                 'status'           => 'pending',
-                'created_by'       => Auth::id(),
+                'created_by'     => $request->created_by,
             ]);
 
             $ledger = SupplierLedger::create([
@@ -89,7 +89,7 @@ class PurchaseController extends Controller
                 'branch_name'    => $request->branch_name,
                 'vehicle_no'     => $request->vehicle_no,
                 'status'         => 'pending',
-                'created_by'     => Auth::id(),
+                'created_by'     => $request->created_by,
             ]);
 
             DB::commit();

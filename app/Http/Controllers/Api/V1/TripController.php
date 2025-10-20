@@ -83,6 +83,7 @@ class TripController extends Controller
                 'others_cost'      => $request->others_cost,
                 'vendor_name'      => $request->vendor_name,
                 'additional_cost'  => $request->additional_cost,
+                'created_by'  => $request->created_by,
                 'status'           => "Pending",
             ]);
 
@@ -239,6 +240,7 @@ class TripController extends Controller
                 'others_cost'      => $request->others_cost,
                 'vendor_name'      => $request->vendor_name,
                 'additional_cost'  => $request->additional_cost,
+                'created_by'  => $request->created_by,
                 'status'           => $request->status ?? $trip->status,
             ]);
 

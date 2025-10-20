@@ -57,6 +57,7 @@ class DailyExpenseController extends Controller
             'payment_category',
             'paid_to',
             'amount',
+            'branch_name',
             'status'
         ]));
 

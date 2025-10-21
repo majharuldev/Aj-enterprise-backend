@@ -7,8 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class trip extends Model
 {
     //
-
-
-    protected $guarded=[''];
-    
+    protected $guarded = [''];
 }

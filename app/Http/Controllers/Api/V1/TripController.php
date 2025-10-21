@@ -43,6 +43,7 @@ class TripController extends Controller
             $trip = Trip::create([
                 'user_id'          => Auth::id(),
                 'customer'         => $request->customer,
+
                 'start_date'       => $request->start_date,
                 'end_date'         => $request->end_date,
                 'branch_name'      => $request->branch_name,
@@ -106,7 +107,6 @@ class TripController extends Controller
                     'chada'            => $request->chada,
                     'fuel_cost'     => $request->fuel_cost,
                     'challan_cost'     => $request->challan_cost,
-
                     'others_cost'      => $request->others_cost,
                     'labor'            => $request->labor,
                     'total_exp'        => $request->total_exp,
@@ -199,6 +199,8 @@ class TripController extends Controller
             // Update trip table
             $trip->update([
                 'customer'         => $request->customer,
+                'buyer_name'         => $request->buyer_name,
+                'invoice_no'         => $request->invoice_no,
                 'start_date'       => $request->start_date,
                 'end_date'         => $request->end_date,
                 'branch_name'      => $request->branch_name,

@@ -43,7 +43,8 @@ class TripController extends Controller
             $trip = Trip::create([
                 'user_id'          => Auth::id(),
                 'customer'         => $request->customer,
-
+                'buyer_name'         => $request->buyer_name,
+                'invoice_no'         => $request->invoice_no,
                 'start_date'       => $request->start_date,
                 'end_date'         => $request->end_date,
                 'branch_name'      => $request->branch_name,
@@ -85,7 +86,7 @@ class TripController extends Controller
                 'vendor_name'      => $request->vendor_name,
                 'additional_cost'  => $request->additional_cost,
                 'created_by'  => $request->created_by,
-                'status'           => "Pending",
+                'status'           => $request->status,
             ]);
 
             // Insert into driver or vendor ledger based on transport type
@@ -142,22 +143,28 @@ class TripController extends Controller
                 'created_by'  => Auth::id(),
             ]);
 
-            CustomerLedger::create([
-                'user_id'          => Auth::id(),
-                'working_date'  => $request->start_date,  // fixed spelling
-                'customer_name' => $request->customer,
-                'trip_id'       => $trip->id,
-                'chalan'       => $request->challan,
-                'load_point'    => $request->load_point,
-                'unload_point'  => $request->unload_point,
-                'vehicle_no'    => $request->vehicle_no,
-                'bill_amount'   => $request->total_rent,
-                // fixed
-                'd_day'     => $request->d_day,
-                'd_amount'     => $request->d_amount,
-                'd_total'     => $request->d_total,
-                'driver_name'   => $request->driver_name,
-            ]);
+
+            if ($request->status == "Approved") {
+
+                CustomerLedger::create([
+                    'user_id'          => Auth::id(),
+                    'working_date'  => $request->start_date,  // fixed spelling
+                    'customer_name' => $request->customer,
+                    'trip_id'       => $trip->id,
+                    'chalan'       => $request->challan,
+                    'load_point'    => $request->load_point,
+                    'unload_point'  => $request->unload_point,
+                    'vehicle_no'    => $request->vehicle_no,
+                    'bill_amount'   => $request->total_rent,
+                    // fixed
+                    'd_day'     => $request->d_day,
+                    'd_amount'     => $request->d_amount,
+                    'd_total'     => $request->d_total,
+                    'driver_name'   => $request->driver_name,
+                ]);
+            }
+
+
 
             DB::commit();
 
@@ -238,7 +245,6 @@ class TripController extends Controller
                 'police_cost'      => $request->police_cost,
                 'chada'            => $request->chada,
                 'labor'            => $request->labor,
-                'challan_cost'     => $request->challan_cost,
                 'others_cost'      => $request->others_cost,
                 'vendor_name'      => $request->vendor_name,
                 'additional_cost'  => $request->additional_cost,
@@ -266,7 +272,6 @@ class TripController extends Controller
                         'chada'            => $request->chada,
                         'challan_cost'     => $request->challan_cost,
                         'fuel_cost'     => $request->fuel_cost,
-
                         'others_cost'      => $request->others_cost,
                         'labor'            => $request->labor,
                         'total_exp'        => $request->total_exp,
@@ -308,24 +313,29 @@ class TripController extends Controller
             );
 
             // Update CustomerLedger
-            CustomerLedger::updateOrCreate(
-                ['trip_id' => $trip->id],
-                [
-                    'working_date'  => $request->start_date,  // fixed spelling
-                    'customer_name' => $request->customer,
-                    'trip_id'       => $trip->id,
-                    'chalan'       => $request->challan,
-                    'load_point'    => $request->load_point,
-                    'unload_point'  => $request->unload_point,
-                    'vehicle_no'    => $request->vehicle_no,
-                    'bill_amount'   => $request->total_rent,
-                    // fixed
-                    'd_day'     => $request->d_day,
-                    'd_amount'     => $request->d_amount,
-                    'd_total'     => $request->d_total,
-                    'driver_name'   => $request->driver_name,
-                ]
-            );
+
+            if ($request->status == "Approved") {
+
+                CustomerLedger::updateOrCreate(
+                    ['trip_id' => $trip->id],
+                    [
+                        'working_date'  => $request->start_date,  // fixed spelling
+                        'customer_name' => $request->customer,
+                        'trip_id'       => $trip->id,
+                        'chalan'       => $request->challan,
+                        'load_point'    => $request->load_point,
+                        'unload_point'  => $request->unload_point,
+                        'vehicle_no'    => $request->vehicle_no,
+                        'bill_amount'   => $request->total_rent,
+                        // fixed4
+                        'd_day'     => $request->d_day,
+                        'd_amount'     => $request->d_amount,
+                        'd_total'     => $request->d_total,
+                        'driver_name'   => $request->driver_name,
+                    ]
+                );
+            }
+
 
             DB::commit();
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VendorController extends Controller
 {
-  // get all Data by userid
+    // get all Data by userid
     public function index()
     {
         $Vendors = Vendor::all();

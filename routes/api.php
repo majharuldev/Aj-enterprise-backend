@@ -97,6 +97,9 @@ Route::prefix('v1')->group(function () {
     // employee
     Route::apiResource('employee', EmployeeController::class);
 
+    Route::post('employee/{id}', [EmployeeController::class, 'update']);
+
+
     // customer
     Route::apiResource('customer', CustomerController::class);
 

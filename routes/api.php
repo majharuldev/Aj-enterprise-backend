@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\V1\VendorPaymentController;
 use App\Http\Controllers\Api\V1\CustomerLedgerController;
 use App\Http\Controllers\Api\V1\LoanController;
 use App\Http\Controllers\Api\V1\PaymentRecieveController;
+use App\Http\Controllers\Api\V1\RequsitionController;
 use App\Http\Controllers\Api\V1\SupplierLedgerController;
 use App\Http\Controllers\Api\V1\UserController;
 
@@ -69,7 +70,8 @@ Route::prefix('v1')->group(function () {
 
     // purchase
     Route::apiResource('purchase', PurchaseController::class);
-
+    // 
+    Route::post('purchase/{id}', [PurchaseController::class, 'update']);
     // parts route
     Route::apiResource('parts', PartsController::class);
 
@@ -155,5 +157,8 @@ Route::prefix('v1')->group(function () {
 
     // bonous
     Route::apiResource('bonous', BonousController::class);
+
+    // requestion
+    Route::apiResource('requestion', RequsitionController::class);
   });
 });

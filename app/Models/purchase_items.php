@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class purchase_items extends Model
 {
-    protected $guarded = [''];
+    protected $guarded = [];
 }

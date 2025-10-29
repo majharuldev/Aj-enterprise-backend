@@ -20,7 +20,7 @@ class PurchaseController extends Controller
     public function index()
     {
         $data = Purchase::all();
-
+        $data->load('items');
         return response()->json([
             'status' => 'Success',
             'data' => $data
@@ -30,22 +30,25 @@ class PurchaseController extends Controller
 
     public function store(Request $request)
     {
+        // 1️⃣ Validate incoming request
+
         DB::beginTransaction();
-        $image_name = null;
+
         try {
+            // 2️⃣ Handle image upload
+            $image_name = null;
             if ($request->hasFile('image')) {
-                // Your existing file handling logic
-                $image_name = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/purchase'), $image_name);
-                // $image = $image_name; // This line is redundant, $image_name is already set.
+                $image_name = time() . '.' . $request->file('image')->getClientOriginalExtension();
+                $request->file('image')->move(public_path('uploads/purchase'), $image_name);
             }
-            // 1) Main Purchase create (WITHOUT per item fields)
+
+            // 3️⃣ Create Purchase
             $purchase = Purchase::create([
                 'user_id'          => Auth::id(),
                 'date'             => $request->date,
                 'supplier_name'    => $request->supplier_name,
                 'category'         => $request->category,
-                'purchase_amount'  => $request->purchase_amount, // FRONTEND total
+                'purchase_amount'  => $request->purchase_amount,
                 'remarks'          => $request->remarks,
                 'driver_name'      => $request->driver_name,
                 'branch_name'      => $request->branch_name,
@@ -53,16 +56,17 @@ class PurchaseController extends Controller
                 'vehicle_category' => $request->vehicle_category,
                 'priority'         => $request->priority,
                 'validity'         => $request->validity,
-                'image'             => $image_name,
+                'image'            => $image_name,
                 'next_service_date' => $request->next_service_date,
                 'service_date'     => $request->service_date,
+                'service_charge'     => $request->service_charge,
                 'last_km'          => $request->last_km,
                 'next_km'          => $request->next_km,
                 'status'           => 'pending',
                 'created_by'       => $request->created_by,
             ]);
 
-            // 2) Insert MULTIPLE items in purchase_items
+            // 4️⃣ Insert multiple Purchase Items
             foreach ($request->item_name as $key => $name) {
                 purchase_items::create([
                     'purchase_id' => $purchase->id,
@@ -73,8 +77,8 @@ class PurchaseController extends Controller
                 ]);
             }
 
-            // 3) Single ledger entry (TOTAL)
-            $ledger = SupplierLedger::create([
+            // 5️⃣ Create Supplier Ledger Entry
+            SupplierLedger::create([
                 'user_id'         => Auth::id(),
                 'date'            => $request->date,
                 'mode'            => 'Purchase',
@@ -86,8 +90,8 @@ class PurchaseController extends Controller
                 'remarks'         => $request->remarks,
             ]);
 
-            // 4) Single payment entry (TOTAL)
-            $payment = Payment::create([
+            // 6️⃣ Create Payment Entry
+            Payment::create([
                 'user_id'        => Auth::id(),
                 'date'           => $request->date,
                 'supplier_name'  => $request->supplier_name,
@@ -105,10 +109,11 @@ class PurchaseController extends Controller
             ]);
 
             DB::commit();
-
+            $purchase->load('items');
             return response()->json([
                 'success' => true,
                 'message' => 'Purchase created successfully',
+                'data'    => $purchase
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -120,6 +125,7 @@ class PurchaseController extends Controller
             ], 500);
         }
     }
+
 
 
 
@@ -265,6 +271,7 @@ class PurchaseController extends Controller
                 'image'             => $image_name, // Updated path or null
                 'next_service_date' => $request->next_service_date,
                 'service_date'      => $request->service_date,
+                'service_charge'     => $request->service_charge,
                 'last_km'           => $request->last_km,
                 'next_km'           => $request->next_km,
                 // ... (other fields) ...
@@ -309,6 +316,8 @@ class PurchaseController extends Controller
 
             DB::commit();
 
+
+            $purchase->load('items');
             // FINAL CLEANUP: Delete the OLD image only AFTER successful commit
             if ($old_image_to_delete) {
                 $image_path = public_path('uploads/purchase') . '/' . $old_image_to_delete;
@@ -320,6 +329,7 @@ class PurchaseController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Purchase updated successfully',
+                'data' => $purchase
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

@@ -75,14 +75,16 @@ class EmployeeController extends Controller
         $validation = validator([
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg'
         ]);
-        $image = null;
+
         $data = Employee::findOrFail($id);
+        $image = $data->image; // পুরনো ইমেজ রেখে দিচ্ছি
+
         if ($request->hasFile('image')) {
-            if ($data->image && file_Exists(public_path('uploads/employee/' . $data->image))) {
-                unlink(public_path('uploads/employee/' . $data->image));
-            }
+
+            // ❌ পুরনো image delete হবে না — শুধু নতুন ইমেজ save হবে
             $image_name = time() . '.' . $request->image->extension();
             $request->image->move(public_path('uploads/employee'), $image_name);
+
             $image = $image_name;
         }
 
@@ -93,6 +95,7 @@ class EmployeeController extends Controller
             'data' => $data
         ], 200);
     }
+
 
     public function show($id)
     {

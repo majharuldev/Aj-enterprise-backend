@@ -235,27 +235,19 @@ class PurchaseController extends Controller
 
         DB::beginTransaction();
 
-        // Initialize $image_name to the existing path by default
+        // Keep existing image by default
         $image_name = $purchase->image;
-        $old_image_to_delete = null;
 
         try {
             // --- Image Handling Logic ---
             if ($request->hasFile('image')) {
-                // 1. Store the old image name for potential deletion later
-                $old_image_to_delete = $purchase->image;
 
-                // 2. Upload the new image
+                // Upload the new image (NO deleting old one)
                 $image_name = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/purchase'), $image_name);
-            } elseif ($request->input('image_removed') == 'true' || $request->input('image_name') === null) {
-                // Check if the frontend explicitly signaled image removal, or if the field is sent empty
-                $old_image_to_delete = $purchase->image;
-                $image_name = null; // Clear the image field in the database
-            }
-            // If no file is uploaded and no removal flag is set, $image_name remains the existing value.
+            } 
 
-            // 1) Main Purchase update
+            // --- Main Purchase update ---
             $purchase->update([
                 'date'              => $request->date,
                 'supplier_name'     => $request->supplier_name,
@@ -268,20 +260,17 @@ class PurchaseController extends Controller
                 'vehicle_category'  => $request->vehicle_category,
                 'priority'          => $request->priority,
                 'validity'          => $request->validity,
-                'image'             => $image_name, // Updated path or null
+                'image'             => $image_name,
                 'next_service_date' => $request->next_service_date,
                 'service_date'      => $request->service_date,
-                'service_charge'     => $request->service_charge,
+                'service_charge'    => $request->service_charge,
                 'last_km'           => $request->last_km,
                 'next_km'           => $request->next_km,
-                // ... (other fields) ...
             ]);
 
-            // 2) Update/Replace items in purchase_items
-            // A. Delete existing items
+            // --- Update purchase_items ---
             purchase_items::where('purchase_id', $purchase->id)->delete();
 
-            // B. Insert the new/updated items
             foreach ($request->item_name as $key => $name) {
                 purchase_items::create([
                     'purchase_id' => $purchase->id,
@@ -292,39 +281,31 @@ class PurchaseController extends Controller
                 ]);
             }
 
-            // 3) Single ledger entry update
+            // --- Update ledger ---
             SupplierLedger::where('purchase_id', $purchase->id)->update([
-                'date'              => $request->date,
-                'purchase_amount'   => $request->purchase_amount,
-                'catagory'          => $request->category,
-                'supplier_name'     => $request->supplier_name,
-                'remarks'           => $request->remarks,
+                'date'            => $request->date,
+                'purchase_amount' => $request->purchase_amount,
+                'catagory'        => $request->category,
+                'supplier_name'   => $request->supplier_name,
+                'remarks'         => $request->remarks,
             ]);
 
-            // 4) Single payment entry update
+            // --- Update payment ---
             Payment::where('purchase_id', $purchase->id)->update([
-                'date'           => $request->date,
-                'supplier_name'  => $request->supplier_name,
-                'category'       => $request->category,
-                'total_amount'   => $request->purchase_amount,
-                'due_amount'     => $request->purchase_amount,
-                'remarks'        => $request->remarks,
-                'driver_name'    => $request->driver_name,
-                'branch_name'    => $request->branch_name,
-                'vehicle_no'     => $request->vehicle_no,
+                'date'          => $request->date,
+                'supplier_name' => $request->supplier_name,
+                'category'      => $request->category,
+                'total_amount'  => $request->purchase_amount,
+                'due_amount'    => $request->purchase_amount,
+                'remarks'       => $request->remarks,
+                'driver_name'   => $request->driver_name,
+                'branch_name'   => $request->branch_name,
+                'vehicle_no'    => $request->vehicle_no,
             ]);
 
             DB::commit();
 
-
             $purchase->load('items');
-            // FINAL CLEANUP: Delete the OLD image only AFTER successful commit
-            if ($old_image_to_delete) {
-                $image_path = public_path('uploads/purchase') . '/' . $old_image_to_delete;
-                if (File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
 
             return response()->json([
                 'success' => true,
@@ -332,16 +313,11 @@ class PurchaseController extends Controller
                 'data' => $purchase
             ], 200);
         } catch (\Exception $e) {
+
             DB::rollBack();
 
-            // Rollback Cleanup: If a NEW image was uploaded but the DB failed, delete the NEW image.
-            // This prevents orphaned files.
-            if ($image_name && $image_name != $purchase->image) {
-                $new_image_path = public_path('uploads/purchase') . '/' . $image_name;
-                if (File::exists($new_image_path)) {
-                    File::delete($new_image_path);
-                }
-            }
+            // ❌ No deleting even the new uploaded image 
+            // (Keeping logic simple as you requested)
 
             return response()->json([
                 'success' => false,
@@ -350,6 +326,7 @@ class PurchaseController extends Controller
             ], 500);
         }
     }
+
 
 
 

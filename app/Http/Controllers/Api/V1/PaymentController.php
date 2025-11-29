@@ -14,7 +14,7 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $data = Payment::all();
+        $data = Payment::with('purchase.items')->get(); // payment + purchase + items একসাথে
 
         return response()->json([
             'status' => 'Success',
@@ -64,7 +64,7 @@ class PaymentController extends Controller
                 'date'         => $request->created_at ?? now(),
                 'branch_name'  => $request->branch_name,
                 'payment_id'  => $payment->id,
-                'remarks'      => $request->item_name,
+                'remarks'      => $request->remarks,
                 'cash_out'     => $request->pay_amount,
             ]);
 

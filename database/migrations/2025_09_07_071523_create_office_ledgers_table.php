@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('purchase_id')->nullable();
             $table->string('payment_rec_id')->nullable();
             $table->string('payment_id')->nullable();
+            $table->string('loan_id')->nullable();
+            $table->string('advanced_id')->nullable();
             $table->string('remarks')->nullable();
             $table->string('mode')->nullable();
             $table->string('unload_point')->nullable();
